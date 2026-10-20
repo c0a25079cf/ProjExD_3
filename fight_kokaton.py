@@ -151,21 +151,21 @@ class Score:
         引数2 screen：画面Surface
         """
         self.fonto = pg.font.Font(None, 50)
-        self.score = 0
+        self.score = 0  # 初期スコア
         self.color = color
         self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)
         self.rct = self.img.get_rect()
         scrct = screen.get_rect()
-        self.rct.centery = scrct.bottom - 50  
+        self.rct.centery = scrct.bottom - 50
         self.rct.centerx = 100
 
     def update(self, screen: pg.Surface, nscore: int):
         """
-        現在のスコアを表示させる文字列Surfaceをblitする
+        現在のスコアを表示させる文字列Surfaceを生成する
         引数1 screen：画面Surface
         引数2 nscore：現在のスコアint
         """
-        self.score = nscore
+        self.score = nscore  # 現在のスコア
         self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)
         screen.blit(self.img, self.rct)
 
@@ -179,7 +179,7 @@ def main():
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]  # 個数分の爆弾のリスト生成
     beam = None  # ゲーム初期化時にはビームは存在しない
     score = Score((0, 0, 255), screen)
-    nscore = 0
+    nscore = 0  # 現在のスコア
     clock = pg.time.Clock()
     tmr = 0
     while True:
