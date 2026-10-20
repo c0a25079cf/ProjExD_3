@@ -218,9 +218,7 @@ def main():
         bombs = [bomb for bomb in bombs if bomb is not None]  # リストのNoneの部分を詰める
         beams = [beam for beam in beams if beam is not None]  # リストのNoneの部分を詰める
 
-        for j, beam in enumerate(beams):
-            if beam.rct.centerx == -(WIDTH / 2):
-                beams.remove(j)
+        beams = [beam for beam in beams if check_bound(beam.rct) == (True, True)]
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
