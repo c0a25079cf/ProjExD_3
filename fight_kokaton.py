@@ -206,8 +206,10 @@ def main():
         
         for i, bomb in enumerate(bombs):
             for j, beam in enumerate(beams):
+                if beam is None:
+                    continue
                 if beam.rct.colliderect(bomb.rct):  # ビームと爆弾の衝突判定
-                    beam[j] = None
+                    beams[j] = None
                     bombs[i] = None
                     nscore += 1  # スコアアップ
                     bird.change_img(6, screen)  # よろこびエフェクト
@@ -215,6 +217,10 @@ def main():
 
         bombs = [bomb for bomb in bombs if bomb is not None]  # リストのNoneの部分を詰める
         beams = [beam for beam in beams if beam is not None]  # リストのNoneの部分を詰める
+
+        for j, beam in enumerate(beams):
+            if beam.rct.centerx == -(WIDTH / 2):
+                beams.remove(j)
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
