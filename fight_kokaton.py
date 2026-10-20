@@ -150,12 +150,12 @@ class Score:
         引数1 color：スコア文字列の色tuple
         引数2 screen：画面Surface
         """
-        self.fonto = pg.font.Font(None, 50)
+        self.fonto = pg.font.Font(None, 50)  # フォントオブジェクト生成
         self.score = 0  # 初期スコア
-        self.color = color
-        self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)
-        self.rct = self.img.get_rect()
-        scrct = screen.get_rect()
+        self.color = color  # 引数から色を取得
+        self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)  # 文字列Surface生成
+        self.rct = self.img.get_rect()  # 文字列の座標取得
+        scrct = screen.get_rect()  # 画面Surfaceの下部座標取得
         self.rct.centery = scrct.bottom - 50
         self.rct.centerx = 100
 
