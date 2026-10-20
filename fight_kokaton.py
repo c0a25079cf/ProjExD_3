@@ -140,6 +140,35 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+class Score:
+    """
+    スコア表示に関するクラス
+    """
+    def __init__(self, color: tuple[int, int, int], screen: pg.Surface):
+        """
+        スコア表示の文字列Surfaceを生成する
+        引数1 color：スコア文字列の色tuple
+        引数2 screen：画面Surface
+        """
+        self.fonto = pg.font.Font(None, 50)
+        self.score = 0
+        self.color = color
+        self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)
+        self.rct = self.img.get_rect()
+        scrct = screen.get_rect()
+        self.rct.centery = scrct.bottom - 50  
+        self.rct.centerx = 100
+
+    def update(self, screen: pg.Surface, nscore: int):
+        """
+        現在のスコアを表示させる文字列Surfaceをblitする
+        引数1 screen：画面Surface
+        引数2 nscore：現在のスコアint
+        """
+        self.score = nscore
+        self.img = self.fonto.render("Score: "+str(self.score), 0, self.color)
+        screen.blit(self.img, self.rct)
+
 
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
@@ -149,6 +178,8 @@ def main():
     # bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]  # 個数分の爆弾のリスト生成
     beam = None  # ゲーム初期化時にはビームは存在しない
+    score = Score((0, 0, 255), screen)
+    nscore = 0
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -176,6 +207,7 @@ def main():
                 if beam.rct.colliderect(bomb.rct):  # ビームと爆弾の衝突判定
                     beam = None
                     bombs[i] = None
+                    nscore += 1  # スコアアップ
                     bird.change_img(6, screen)  # よろこびエフェクト
                     pg.display.update()
 
@@ -187,6 +219,7 @@ def main():
             beam.update(screen)
         for bomb in bombs:
             bomb.update(screen)
+        score.update(screen, nscore)
         pg.display.update()
         tmr += 1
         clock.tick(50)
